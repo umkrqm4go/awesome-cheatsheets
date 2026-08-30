@@ -1,164 +1,73 @@
-<div align="center">
+#!/usr/bin/env bash
+# Docker cheatsheet
 
-[![AWESOME CHEATSHEETS LOGO](_design/cover_github@2x.png)](https://lecoupa.github.io/awesome-cheatsheets/)
+# --- IMAGES ---
+# Build an image from a Dockerfile
+docker build -t <image_name>:<tag> .
 
-<a href="https://trendshift.io/repositories/5584" target="_blank">
-  <img src="https://trendshift.io/api/badge/repositories/5584" alt="LeCoupa%2Fawesome-cheatsheets | Trendshift" width="250" height="55"/>
-</a>
+# Build without using cache
+docker build --no-cache -t <image_name>:<tag> .
 
-[![Awesome](https://awesome.re/badge.svg)](https://awesome.re) [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/LeCoupa/awesome-cheatsheets/blob/master/LICENSE)
+# List local images
+docker images
 
-**WEBSITE DIRECTORY**: [Available here](https://lecoupa.github.io/awesome-cheatsheets/)
+# Remove an image
+docker rmi <image_id>
 
-> 📚 Awesome cheatsheets for popular programming languages, frameworks and development tools. They include everything you should know in one single file.
+# Remove dangling (unused) images
+docker image prune
 
-</div>
+# Remove all unused images
+docker image prune -a
 
----
+# --- CONTAINERS ---
+# Run a container in detached mode with port mapping
+docker run -d -p <host_port>:<container_port> --name <container_name> <image_name>
 
-## 🤔 Why Awesome-Cheatsheets?
+# Run an interactive container and remove it after exit
+docker run --rm -it <image_name> /bin/bash
 
-I usually make a cheat sheet when I want to improve my skills in a programming language, a framework or a development tool. [I started doing these kinds of things a long time ago on Gist](https://gist.github.com/LeCoupa). To better keep track of the history and to let people contribute, I re-organized all of them into this single repository. Most of the content is coming from official documentation and some books I have read.
+# List running containers
+docker ps
 
-Feel free to take a look. You might learn new things. They have been designed to provide a quick way to assess your knowledge and to save you time.
+# List all containers (including stopped)
+docker ps -a
 
----
+# Stop a container
+docker stop <container_id>
 
-## 📚 Table of Contents
+# Start a stopped container
+docker start <container_id>
 
-### 📃 Languages
+# Restart a container
+docker restart <container_id>
 
-<details>
-<summary>View cheatsheets</summary>
+# Remove a stopped container
+docker rm <container_id>
 
-#### Command line interface
-- [Bash](languages/bash.sh)
+# Force remove a running container
+docker rm -f <container_id>
 
-#### Imperative
-- [C](languages/C.txt)
-- [C#](languages/C%23.txt)
-- [Go](languages/golang.md)
-- [Java](languages/java.md)
-- [PHP](languages/php.php)
-- [Python](languages/python.md)
-- [XML](languages/XML.md)
+# --- LOGS & MONITORING ---
+# View container logs
+docker logs <container_id>
 
-#### Functional
-- [JavaScript](languages/javascript.js)
-- [Typescript](languages/typescript.md)
+# Follow container logs in real time
+docker logs -f --tail 100 <container_id>
 
-</details>
+# Display resource usage stats of running containers
+docker stats
 
----
+# Inspect container details
+docker inspect <container_id>
 
-### 📦 Backend
+# --- EXEC & SHELL ---
+# Execute a command inside a running container
+docker exec -it <container_id> /bin/sh
 
-<details>
-<summary>View cheatsheets</summary>
+# --- CLEANUP ---
+# Clean up stopped containers, unused networks, and dangling images
+docker system prune -f
 
-#### PHP
-- [Laravel](backend/laravel.php)
-
-#### Python
-- [Django](backend/django.py)
-
-#### JavaScript
-- [Adonis.js](backend/adonis.js)
-- [Express.js](backend/express.js)
-- [Feathers.js](backend/feathers.js)
-- [Moleculer](backend/moleculer.js)
-- [Node.js](backend/node.js)
-- [Sails.js](backend/sails.js)
-
-</details>
-
----
-
-
-### 🌐 Frontend
-
-<details>
-<summary>View cheatsheets</summary>
-
-#### Basics
-- [HTML5](frontend/html5.html)
-- [CSS3](frontend/css3.css)
-- [Typescript](frontend/typescript.ts)
-
-#### Frameworks
-- [React.js](frontend/react.js)
-- [Vue.js](frontend/vue.js)
-- [Tailwind.css](frontend/tailwind.css)
-- [Ember.js](frontend/ember.js)
-- [Angular (2+)](frontend/angular.js)
-- [AngularJS](frontend/angularjs.js)
-</details>
-
----
-
-### 🗃️ Databases
-
-<details>
-<summary>View cheatsheets</summary>
-
-#### SQL
-- [MySQL](databases/mysql.sh)
-
-#### NoSQL
-- [MongoDB](databases/mongodb.sh)
-- [Redis](databases/redis.sh)
-
-</details>
-
----
-
-### 🔧 Tools
-
-<details>
-<summary>View cheatsheets</summary>
-
-#### Development
-- [cURL](tools/curl.sh)
-- [Drush](tools/drush.sh)
-- [Elasticsearch](tools/elasticsearch.js)
-- [Emmet](tools/emmet.md)
-- [Git](tools/git.sh)
-- [Puppeteer](tools/puppeteer.js)
-- [Sublime Text](tools/sublime_text.md)
-- [VIM](tools/vim.txt)
-- [Visual Studio Code](tools/vscode.md)
-- [Xcode](tools/xcode.txt)
-
-#### Infrastructure
-- [AWS CLI](tools/aws.sh)
-- [Docker](tools/docker.sh)
-- [GCP CLI](tools/gcp.md)
-- [Heroku CLI](tools/heroku.sh)
-- [Kubernetes](tools/kubernetes.md)
-- [macOS](tools/macos.sh)
-- [Nanobox Boxfile](tools/nanobox_boxfile.yml)
-- [Nanobox CLI](tools/nanobox_cli.sh)
-- [Nginx](tools/nginx.sh)
-- [PM2](tools/pm2.sh)
-- [Ubuntu](tools/ubuntu.sh)
-- [Firebase CLI](tools/firebase_cli.md)
-
-</details>
-
----
-
-## 🙌🏼 How to Contribute?
-
-You are more than welcome to contribute and build your own cheat sheet for your favorite programming language, framework or development tool. Just submit changes via pull request and I will review them before merging.
-
----
-
-## 👩‍💻👨‍💻 Our valuable Contributors
-
-<div align="center">
-
-<a href="https://github.com/LeCoupa/awesome-cheatsheets/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=LeCoupa/awesome-cheatsheets" />
-</a>
-
-</div>
+# Clean up everything including unused volumes
+docker system prune -a --volumes -f
