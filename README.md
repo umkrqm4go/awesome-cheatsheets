@@ -1,73 +1,57 @@
 #!/usr/bin/env bash
-# Docker cheatsheet
+# Docker Cheat Sheet
 
-# --- IMAGES ---
-# Build an image from a Dockerfile
-docker build -t <image_name>:<tag> .
+# --- BUILD ---
+docker build -t image_name .
+docker build -t image_name:tag .
+docker build -f Dockerfile.dev -t image_name .
+docker build --no-cache -t image_name .
+docker build --build-arg HTTP_PROXY=http://10.20.30.40:1234 .
 
-# Build without using cache
-docker build --no-cache -t <image_name>:<tag> .
+# --- BUILDX (Multi-platform) ---
+docker buildx create --use --name mybuilder
+docker buildx build --platform linux/amd64,linux/arm64 -t image_name:tag --push .
 
-# List local images
-docker images
-
-# Remove an image
-docker rmi <image_id>
-
-# Remove dangling (unused) images
-docker image prune
-
-# Remove all unused images
-docker image prune -a
+# --- RUN ---
+docker run -d -p 8080:80 --name my_container image_name
+docker run -it --rm image_name /bin/bash
+docker run -v $(pwd):/app image_name
+docker run --env-file .env image_name
+docker run --restart=always image_name
 
 # --- CONTAINERS ---
-# Run a container in detached mode with port mapping
-docker run -d -p <host_port>:<container_port> --name <container_name> <image_name>
-
-# Run an interactive container and remove it after exit
-docker run --rm -it <image_name> /bin/bash
-
-# List running containers
 docker ps
-
-# List all containers (including stopped)
 docker ps -a
+docker stop container_id
+docker start container_id
+docker restart container_id
+docker rm container_id
+docker rm -f $(docker ps -aq) # Remove all containers
 
-# Stop a container
-docker stop <container_id>
+# --- IMAGES ---
+docker images
+docker rmi image_name
+docker rmi $(docker images -q) # Remove all images
+docker image prune -a
 
-# Start a stopped container
-docker start <container_id>
-
-# Restart a container
-docker restart <container_id>
-
-# Remove a stopped container
-docker rm <container_id>
-
-# Force remove a running container
-docker rm -f <container_id>
-
-# --- LOGS & MONITORING ---
-# View container logs
-docker logs <container_id>
-
-# Follow container logs in real time
-docker logs -f --tail 100 <container_id>
-
-# Display resource usage stats of running containers
+# --- LOGS & EXEC ---
+docker logs container_id
+docker logs -f --tail 100 container_id
+docker exec -it container_id /bin/bash
+docker inspect container_id
 docker stats
 
-# Inspect container details
-docker inspect <container_id>
+# --- NETWORKS ---
+docker network ls
+docker network create my_network
+docker network connect my_network container_id
+docker network inspect my_network
 
-# --- EXEC & SHELL ---
-# Execute a command inside a running container
-docker exec -it <container_id> /bin/sh
+# --- VOLUMES ---
+docker volume ls
+docker volume create my_volume
+docker volume inspect my_volume
+docker volume prune
 
 # --- CLEANUP ---
-# Clean up stopped containers, unused networks, and dangling images
-docker system prune -f
-
-# Clean up everything including unused volumes
-docker system prune -a --volumes -f
+docker system prune -a --volumes
